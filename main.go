@@ -3,12 +3,13 @@ package main
 import (
 	"github.com/labstack/echo/v4"
 	echoSwagger "github.com/swaggo/echo-swagger"
-	_ "github.com/telman03/ufc/docs" // Import the generated docs
+	_ "github.com/telman03/ufc/docs"
+	"github.com/telman03/ufc/models"
+	// "github.com/telman03/ufc/scraper"
 
 	"github.com/telman03/ufc/db"
 	"github.com/telman03/ufc/handlers"
 	"github.com/telman03/ufc/middleware"
-	"github.com/telman03/ufc/models"
 )
 
 // @title UFC API
@@ -20,17 +21,23 @@ import (
 func main() {
 	e := echo.New()
 
-	// Enable CORS (fixes some Swagger UI issues)
 	e.Use(middleware.CORS())
 
 	db.ConnectDB()
 	db.DB.AutoMigrate(&models.User{}, &models.Fighter{}, &models.Favorite{})
 
+	// go scraper.ScrapeAndStoreFighters()
+
 	e.POST("/register", handlers.Register)
 	e.POST("/login", handlers.Login)
 
+
 	e.GET("/profile", handlers.ProtectedRoute, middleware.AuthMiddleware)
+
 	e.GET("/swagger/*", echoSwagger.WrapHandler)
+
+	e.GET("/fighters", handlers.SearchFighters)
 
 	e.Logger.Fatal(e.Start(":8080"))
 }
+

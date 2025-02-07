@@ -15,6 +15,88 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/fighters": {
+            "get": {
+                "description": "Search fighters based on name, stance, weight, wins, losses, and paginate results",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Fighters"
+                ],
+                "summary": "Search and filter fighters",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Fighter's Name",
+                        "name": "name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Fighter's Stance (e.g., Southpaw, Orthodox)",
+                        "name": "stance",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Fighter's Weight",
+                        "name": "weight",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Minimum Wins",
+                        "name": "wins",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Maximum Losses",
+                        "name": "losses",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Limit number of results (default is 10)",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Offset for pagination (default is 0)",
+                        "name": "offset",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of fighters",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Fighter"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid query parameters",
+                        "schema": {
+                            "$ref": "#/definitions/echo.Map"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/echo.Map"
+                        }
+                    }
+                }
+            }
+        },
         "/login": {
             "post": {
                 "description": "Authenticate user and return JWT token",
@@ -109,6 +191,72 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "echo.Map": {
+            "type": "object",
+            "additionalProperties": true
+        },
+        "gorm.DeletedAt": {
+            "type": "object",
+            "properties": {
+                "time": {
+                    "type": "string"
+                },
+                "valid": {
+                    "description": "Valid is true if Time is not NULL",
+                    "type": "boolean"
+                }
+            }
+        },
+        "models.Fighter": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "deleted_at": {
+                    "$ref": "#/definitions/gorm.DeletedAt"
+                },
+                "draws": {
+                    "type": "integer"
+                },
+                "first_name": {
+                    "type": "string"
+                },
+                "height": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "last_name": {
+                    "type": "string"
+                },
+                "losses": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "nickname": {
+                    "type": "string"
+                },
+                "reach": {
+                    "type": "string"
+                },
+                "stance": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "weight": {
+                    "type": "string"
+                },
+                "wins": {
+                    "type": "integer"
+                }
+            }
+        },
         "models.LoginInput": {
             "type": "object",
             "properties": {

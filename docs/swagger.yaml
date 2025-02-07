@@ -1,0 +1,99 @@
+definitions:
+  models.LoginInput:
+    properties:
+      email:
+        default: user@example.com
+        example: test@example.com
+        type: string
+      password:
+        default: "123456"
+        example: password123
+        type: string
+    type: object
+  models.RegisterInput:
+    properties:
+      email:
+        default: user@example.com
+        example: user@example.com
+        type: string
+      password:
+        default: "123456"
+        example: "123456"
+        type: string
+      username:
+        default: testuser
+        example: testuser
+        type: string
+    type: object
+info:
+  contact: {}
+  description: This is an API for UFC Fight tracking
+  title: UFC API
+  version: "1.0"
+paths:
+  /login:
+    post:
+      consumes:
+      - application/json
+      description: Authenticate user and return JWT token
+      parameters:
+      - description: User Login Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.LoginInput'
+      produces:
+      - application/json
+      responses: {}
+      summary: Login user
+      tags:
+      - auth
+  /profile:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve the authenticated user's profile using JWT token
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: User profile data
+          schema:
+            additionalProperties: true
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Get user profile
+      tags:
+      - auth
+  /register:
+    post:
+      consumes:
+      - application/json
+      description: Create a new user account
+      parameters:
+      - description: User Registration Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.RegisterInput'
+      produces:
+      - application/json
+      responses: {}
+      summary: Register a new user
+      tags:
+      - auth
+securityDefinitions:
+  BearerAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

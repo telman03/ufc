@@ -12,14 +12,18 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
+// Register godoc
+// @Summary Register a new user
+// @Description Create a new user account
+// @Tags auth
+// @Accept  json
+// @Produce  json
+// @Param request body models.RegisterInput true "User Registration Request"
+// @Router /register [post]
 func Register(c echo.Context) error {
-	type RegisterInput struct {
-		Username 	string 		`json:"username"`
-		Email		string 		`json:"email"`
-		Password 	string		`json:"password"`
-	}
+		
+	var input models.RegisterInput
 
-	var input RegisterInput
 	if err := c.Bind(&input); err != nil {
 		return c.JSON(http.StatusBadRequest, echo.Map{"error": "Invalid input"})
 	}
@@ -35,14 +39,19 @@ func Register(c echo.Context) error {
 	return c.JSON(http.StatusCreated, echo.Map{"message": "User registered successfully"})
 }
 
+// Login godoc
+// @Summary Login user
+// @Description Authenticate user and return JWT token
+// @Tags auth
+// @Accept  json
+// @Produce  json
+// @Param request body models.LoginInput true "User Login Request"
+// @Router /login [post]
 func Login(c echo.Context) error {
-	type LoginInput struct {
-		Email		string 		`json:"email"`
-		Password 	string		`json:"password"`
-	}
 
+	
 
-	var input LoginInput
+	var input models.LoginInput
 
 	if err := c.Bind(&input); err != nil {
 		return c.JSON(http.StatusBadRequest, echo.Map{"error": "Invalid input"})
@@ -53,19 +62,18 @@ func Login(c echo.Context) error {
 	if user.ID == 0 {
 		return c.JSON(http.StatusUnauthorized, echo.Map{"error": "Invalid credentials"})
 	}
-	
+
 	err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(input.Password))
 	if err != nil {
 		return c.JSON(http.StatusUnauthorized, echo.Map{"error": "Invalid credentials"})
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"user_id": user.ID,
+		"user_id":  user.ID,
 		"username": user.Username,
-		"exp": time.Now().Add(time.Hour * 24).Unix(),
+		"exp":      time.Now().Add(time.Hour * 24).Unix(),
 	})
 	tokenString, _ := token.SignedString([]byte(os.Getenv("JWT_SECRET")))
 
 	return c.JSON(http.StatusOK, echo.Map{"token": tokenString})
-
 }

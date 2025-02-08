@@ -15,6 +15,91 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/favorites": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "List all fighters favorited by the authenticated user",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "favorites"
+                ],
+                "summary": "List favorite fighters",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Fighter"
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Add a fighter to the authenticated user's favorites list",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "favorites"
+                ],
+                "summary": "Add a fighter to favorites",
+                "parameters": [
+                    {
+                        "description": "Favorite Request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.FavoriteInput"
+                        }
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/favorites/{fighter_id}": {
+            "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Remove a fighter from the authenticated user's favorites list",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "favorites"
+                ],
+                "summary": "Remove a fighter from favorites",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Fighter ID",
+                        "name": "fighter_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            }
+        },
         "/fighters": {
             "get": {
                 "parameters": [
@@ -207,6 +292,17 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "models.FavoriteInput": {
+            "type": "object",
+            "required": [
+                "fighter_id"
+            ],
+            "properties": {
+                "fighter_id": {
+                    "type": "integer"
+                }
+            }
+        },
         "models.Fighter": {
             "type": "object",
             "properties": {

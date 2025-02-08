@@ -44,5 +44,8 @@ func main() {
 	e.GET("/fighters", handlers.SearchFighters)
 	e.GET("/rankings", handlers.GetRankingsByWeightClass)
 
+	e.POST("/favorites", handlers.AddFavorite, middleware.AuthMiddleware)
+	e.DELETE("/favorites/:fighter_id", handlers.RemoveFavorite, middleware.AuthMiddleware)
+	e.GET("/favorites", handlers.ListFavorites, middleware.AuthMiddleware)
 	e.Logger.Fatal(e.Start(":8080"))
 }

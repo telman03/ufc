@@ -26,9 +26,6 @@ type FighterRankingResponse struct {
 // @Accept json
 // @Produce json
 // @Param weightclass query string true "Weight class of fighters (e.g., Lightweight, Welterweight)"
-// @Success 200 {array} Fighter "List of ranked fighters"
-// @Failure 400 {object} map[string]interface{} "Bad Request - Missing weight class parameter"
-// @Failure 500 {object} map[string]interface{} "Internal Server Error - Database query issue"
 // @Router /rankings [get]
 func GetRankingsByWeightClass(c echo.Context) error {
 	weightClass := c.QueryParam("weightclass")

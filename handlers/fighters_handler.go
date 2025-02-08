@@ -16,6 +16,7 @@ import (
 // @Tags Fighters
 // @Accept json
 // @Produce json
+
 // @Param name query string false "Fighter's Name"
 // @Param stance query string false "Fighter's Stance (e.g., Southpaw, Orthodox)"
 // @Param weight query string false "Fighter's Weight"

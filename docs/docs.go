@@ -17,17 +17,6 @@ const docTemplate = `{
     "paths": {
         "/fighters": {
             "get": {
-                "description": "Search fighters based on name, stance, weight, wins, losses, and paginate results",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Fighters"
-                ],
-                "summary": "Search and filter fighters",
                 "parameters": [
                     {
                         "type": "string",
@@ -186,31 +175,7 @@ const docTemplate = `{
                         "required": true
                     }
                 ],
-                "responses": {
-                    "200": {
-                        "description": "List of ranked fighters",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/handlers.Fighter"
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request - Missing weight class parameter",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": true
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error - Database query issue",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": true
-                        }
-                    }
-                }
+                "responses": {}
             }
         },
         "/register": {
@@ -242,29 +207,6 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "handlers.Fighter": {
-            "type": "object",
-            "properties": {
-                "id": {
-                    "type": "integer"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "nickname": {
-                    "type": "string"
-                },
-                "rank": {
-                    "type": "integer"
-                },
-                "record": {
-                    "type": "string"
-                },
-                "weight_class": {
-                    "type": "string"
-                }
-            }
-        },
         "models.Fighter": {
             "type": "object",
             "properties": {

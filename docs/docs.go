@@ -85,13 +85,15 @@ const docTemplate = `{
                     "400": {
                         "description": "Invalid query parameters",
                         "schema": {
-                            "$ref": "#/definitions/echo.Map"
+                            "type": "object",
+                            "additionalProperties": true
                         }
                     },
                     "500": {
                         "description": "Internal server error",
                         "schema": {
-                            "$ref": "#/definitions/echo.Map"
+                            "type": "object",
+                            "additionalProperties": true
                         }
                     }
                 }
@@ -162,6 +164,55 @@ const docTemplate = `{
                 }
             }
         },
+        "/rankings": {
+            "get": {
+                "description": "Retrieve the rankings of fighters for a specific weight class",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Rankings"
+                ],
+                "summary": "Get rankings by weight class",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Weight class of fighters (e.g., Lightweight, Welterweight)",
+                        "name": "weightclass",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of ranked fighters",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/handlers.Fighter"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request - Missing weight class parameter",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error - Database query issue",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
         "/register": {
             "post": {
                 "description": "Create a new user account",
@@ -191,19 +242,26 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "echo.Map": {
-            "type": "object",
-            "additionalProperties": true
-        },
-        "gorm.DeletedAt": {
+        "handlers.Fighter": {
             "type": "object",
             "properties": {
-                "time": {
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
                     "type": "string"
                 },
-                "valid": {
-                    "description": "Valid is true if Time is not NULL",
-                    "type": "boolean"
+                "nickname": {
+                    "type": "string"
+                },
+                "rank": {
+                    "type": "integer"
+                },
+                "record": {
+                    "type": "string"
+                },
+                "weight_class": {
+                    "type": "string"
                 }
             }
         },
@@ -212,9 +270,6 @@ const docTemplate = `{
             "properties": {
                 "created_at": {
                     "type": "string"
-                },
-                "deleted_at": {
-                    "$ref": "#/definitions/gorm.DeletedAt"
                 },
                 "draws": {
                     "type": "integer"
@@ -238,12 +293,6 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "nickname": {
-                    "type": "string"
-                },
-                "reach": {
-                    "type": "string"
-                },
-                "stance": {
                     "type": "string"
                 },
                 "updated_at": {

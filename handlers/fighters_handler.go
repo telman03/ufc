@@ -24,8 +24,8 @@ import (
 // @Param limit query int false "Limit number of results (default is 10)"
 // @Param offset query int false "Offset for pagination (default is 0)"
 // @Success 200 {array} models.Fighter "List of fighters"
-// @Failure 400 {object} echo.Map "Invalid query parameters"
-// @Failure 500 {object} echo.Map "Internal server error"
+// @Failure 400 {object} map[string]interface{} "Invalid query parameters"
+// @Failure 500 {object} map[string]interface{} "Internal server error"
 // @Router /fighters [get]
 func SearchFighters(c echo.Context) error {
 	var fighters []models.Fighter

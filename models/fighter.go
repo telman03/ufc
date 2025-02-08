@@ -9,7 +9,7 @@ type Fighter struct {
 	ID        uint           `gorm:"primaryKey" json:"id"`
 	CreatedAt time.Time      `json:"created_at"`
 	UpdatedAt time.Time      `json:"updated_at"`
-	DeletedAt gorm.DeletedAt `gorm:"index" json:"deleted_at"`
+    DeletedAt gorm.DeletedAt `gorm:"index" json:"-" swaggerignore:"true"` // Ensure ignore
 	Name      string         `gorm:"unique;not null" json:"name"`
 	FirstName string         `json:"first_name"`
 	LastName  string         `json:"last_name"`

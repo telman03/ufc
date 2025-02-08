@@ -1,21 +1,23 @@
 definitions:
-  echo.Map:
-    additionalProperties: true
-    type: object
-  gorm.DeletedAt:
+  handlers.Fighter:
     properties:
-      time:
+      id:
+        type: integer
+      name:
         type: string
-      valid:
-        description: Valid is true if Time is not NULL
-        type: boolean
+      nickname:
+        type: string
+      rank:
+        type: integer
+      record:
+        type: string
+      weight_class:
+        type: string
     type: object
   models.Fighter:
     properties:
       created_at:
         type: string
-      deleted_at:
-        $ref: '#/definitions/gorm.DeletedAt'
       draws:
         type: integer
       first_name:
@@ -31,10 +33,6 @@ definitions:
       name:
         type: string
       nickname:
-        type: string
-      reach:
-        type: string
-      stance:
         type: string
       updated_at:
         type: string
@@ -122,11 +120,13 @@ paths:
         "400":
           description: Invalid query parameters
           schema:
-            $ref: '#/definitions/echo.Map'
+            additionalProperties: true
+            type: object
         "500":
           description: Internal server error
           schema:
-            $ref: '#/definitions/echo.Map'
+            additionalProperties: true
+            type: object
       summary: Search and filter fighters
       tags:
       - Fighters
@@ -172,6 +172,39 @@ paths:
       summary: Get user profile
       tags:
       - auth
+  /rankings:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve the rankings of fighters for a specific weight class
+      parameters:
+      - description: Weight class of fighters (e.g., Lightweight, Welterweight)
+        in: query
+        name: weightclass
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of ranked fighters
+          schema:
+            items:
+              $ref: '#/definitions/handlers.Fighter'
+            type: array
+        "400":
+          description: Bad Request - Missing weight class parameter
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error - Database query issue
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Get rankings by weight class
+      tags:
+      - Rankings
   /register:
     post:
       consumes:

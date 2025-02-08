@@ -5,6 +5,8 @@ import (
 	echoSwagger "github.com/swaggo/echo-swagger"
 	_ "github.com/telman03/ufc/docs"
 	"github.com/telman03/ufc/models"
+
+
 	// "github.com/telman03/ufc/scraper"
 
 	// "gorm.io/gorm"
@@ -40,6 +42,7 @@ func main() {
 	e.GET("/swagger/*", echoSwagger.WrapHandler)
 
 	e.GET("/fighters", handlers.SearchFighters)
+	e.GET("/rankings", handlers.GetRankingsByWeightClass)
 
 	e.Logger.Fatal(e.Start(":8080"))
 }

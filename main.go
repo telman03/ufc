@@ -7,6 +7,10 @@ import (
 	"github.com/telman03/ufc/models"
 	// "github.com/telman03/ufc/scraper"
 
+	// "gorm.io/gorm"
+
+	// "github.com/telman03/ufc/scraper"
+
 	"github.com/telman03/ufc/db"
 	"github.com/telman03/ufc/handlers"
 	"github.com/telman03/ufc/middleware"
@@ -24,13 +28,12 @@ func main() {
 	e.Use(middleware.CORS())
 
 	db.ConnectDB()
-	db.DB.AutoMigrate(&models.User{}, &models.Fighter{}, &models.Favorite{})
+	db.DB.AutoMigrate(&models.User{}, &models.Fighter{}, &models.Favorite{}, &models.Ranking{})
 
 	// go scraper.ScrapeAndStoreFighters()
-
+	// go scraper.ScrapeAndStoreRankings()
 	e.POST("/register", handlers.Register)
 	e.POST("/login", handlers.Login)
-
 
 	e.GET("/profile", handlers.ProtectedRoute, middleware.AuthMiddleware)
 
@@ -40,4 +43,3 @@ func main() {
 
 	e.Logger.Fatal(e.Start(":8080"))
 }
-

@@ -16,8 +16,6 @@ type Fighter struct {
 	Nickname  string         `json:"nickname"`
 	Height    string         `json:"height"`
 	Weight    string         `json:"weight"`
-	Reach     string         `json:"reach"`
-	Stance    string         `json:"stance"`
 	Wins      int            `json:"wins"`
 	Losses    int            `json:"losses"`
 	Draws     int            `json:"draws"`

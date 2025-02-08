@@ -10,7 +10,6 @@ import (
 
 
 
-// FighterRankingResponse represents the JSON response structure
 type FighterRankingResponse struct {
 	Division string `json:"division"`
 	Rank     int    `json:"rank"`
@@ -48,7 +47,6 @@ func GetRankingsByWeightClass(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, map[string]interface{}{"error": "Database error"})
 	}
 
-	// Prepare response
 	var response []FighterRankingResponse
 	for _, ranking := range rankings {
 		response = append(response, FighterRankingResponse{

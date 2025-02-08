@@ -77,25 +77,23 @@ func ScrapeAndStoreRankings() {
 		log.Fatal("Failed to parse page", err)
 	}
 
-	// Fetch all fighters from the database
 	var fighters []models.Fighter
 	db.DB.Find(&fighters)
 
 	doc.Find(".rankingItemsItem").Each(func(i int, s *goquery.Selection) {
-		if i >= 15 { // Limit to the first 15 rankings
-			return // Exit the loop after 15 iterations
+		if i >= 15 { 
+			return
 		}
 		rank := i + 1
-		name := strings.TrimSpace(s.Find(".rankingItemsItemRow .name").Text()) // Corrected selector
+		name := strings.TrimSpace(s.Find(".rankingItemsItemRow .name").Text()) 
 
-		// Debug: Print the scraped name
+
 		fmt.Printf("Scraped Name: %s\n", name)
 
-		// Remove the nickname from the scraped name
+	
 		cleanedName := RemoveNickname(name)
 		fmt.Printf("Cleaned Name: %s\n", cleanedName)
 
-		// Find the fighter in the database using the cleaned name
 		var fighter models.Fighter
 		result := db.DB.Where("name = ?", cleanedName).First(&fighter)
 		if result.Error != nil {
@@ -103,14 +101,12 @@ func ScrapeAndStoreRankings() {
 			return
 		}
 
-		// Create a new ranking entry
 		ranking := models.Ranking{
 			FighterID: fighter.ID,
 			Rank:      rank,
 			Division:  "Heavyweight",
 		}
 
-		// Save the ranking to the database
 		db.DB.Create(&ranking)
 	})
 }
@@ -128,9 +124,7 @@ func parseInt(s string) int {
 }
 
 
-// RemoveNickname removes the nickname (text within quotes) from the scraped name
 func RemoveNickname(name string) string {
-	// Regex to remove text within quotes
 	re := regexp.MustCompile(`\s*".*?"\s*`)
 	return re.ReplaceAllString(name, " ")
 }

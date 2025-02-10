@@ -5,7 +5,7 @@ import (
 	echoSwagger "github.com/swaggo/echo-swagger"
 	_ "github.com/telman03/ufc/docs"
 	"github.com/telman03/ufc/models"
-
+	"github.com/telman03/ufc/scraper"
 
 	// "github.com/telman03/ufc/scraper"
 
@@ -30,10 +30,11 @@ func main() {
 	e.Use(middleware.CORS())
 
 	db.ConnectDB()
-	db.DB.AutoMigrate(&models.User{}, &models.Fighter{}, &models.Favorite{}, &models.Ranking{})
+	db.DB.AutoMigrate(&models.User{}, &models.Fighter{}, &models.Favorite{}, &models.Ranking{}, &models.Event{})
 
 	// go scraper.ScrapeAndStoreFighters()
 	// go scraper.ScrapeAndStoreRankings()
+	go scraper.ScrapeUpcomingEvents()
 	e.POST("/register", handlers.Register)
 	e.POST("/login", handlers.Login)
 

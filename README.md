@@ -58,7 +58,7 @@ The UFC Fight Tracking API is a RESTful API designed to manage and track UFC fig
 4. Run the database migrations:
 
    ```bash
-   go run src/backend/main.go
+   go run main.go
    ```
 
 ### Running the API
@@ -66,7 +66,7 @@ The UFC Fight Tracking API is a RESTful API designed to manage and track UFC fig
 To start the API server, run:
 
 ```bash
-go run src/backend/main.go
+go run main.go
 ```
 
 The server will start on `http://localhost:8080`.

@@ -15,6 +15,61 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/events/upcoming": {
+            "get": {
+                "description": "Fetches a list of upcoming UFC events",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "events"
+                ],
+                "summary": "Get upcoming UFC events",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Event"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/events/{event_id}/fightcard": {
+            "get": {
+                "description": "Fetches all fights scheduled for a specific UFC event",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "events"
+                ],
+                "summary": "Get fight card for an event",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Event ID",
+                        "name": "event_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Fight"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/favorites": {
             "get": {
                 "security": [
@@ -292,6 +347,32 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "models.Event": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "date": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "location": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "url": {
+                    "type": "string"
+                }
+            }
+        },
         "models.FavoriteInput": {
             "type": "object",
             "required": [
@@ -300,6 +381,33 @@ const docTemplate = `{
             "properties": {
                 "fighter_id": {
                     "type": "integer"
+                }
+            }
+        },
+        "models.Fight": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "event_id": {
+                    "description": "Foreign key to Event",
+                    "type": "integer"
+                },
+                "fighter_1": {
+                    "type": "string"
+                },
+                "fighter_2": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "weight_class": {
+                    "type": "string"
                 }
             }
         },

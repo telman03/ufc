@@ -50,5 +50,9 @@ func main() {
 	e.POST("/favorites", handlers.AddFavorite, middleware.AuthMiddleware)
 	e.DELETE("/favorites/:fighter_id", handlers.RemoveFavorite, middleware.AuthMiddleware)
 	e.GET("/favorites", handlers.ListFavorites, middleware.AuthMiddleware)
+	
+	e.GET("/events/upcoming", handlers.GetUpcomingEvents)
+	e.GET("/events/:event_id/fightcard", handlers.GetFightCard)
+
 	e.Logger.Fatal(e.Start(":8080"))
 }

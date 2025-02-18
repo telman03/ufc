@@ -5,7 +5,7 @@ import (
 	echoSwagger "github.com/swaggo/echo-swagger"
 	_ "github.com/telman03/ufc/docs"
 	"github.com/telman03/ufc/models"
-
+	"github.com/telman03/ufc/scheduler"
 
 	// "github.com/telman03/ufc/scraper"
 
@@ -36,6 +36,7 @@ func main() {
 	// go scraper.ScrapeAndStoreRankings()
 	// go scraper.ScrapeUpcomingEvents()
 	// go scraper.ScrapeFightCards()
+	go scheduler.StartScheduler()
 
 	e.POST("/register", handlers.Register)
 	e.POST("/login", handlers.Login)
@@ -53,6 +54,8 @@ func main() {
 	
 	e.GET("/events/upcoming", handlers.GetUpcomingEvents)
 	e.GET("/events/:event_id/fightcard", handlers.GetFightCard)
+
+
 
 	e.Logger.Fatal(e.Start(":8080"))
 }

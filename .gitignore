@@ -2,9 +2,6 @@
 
 
 
-# Go Modules Cache
-/go.sum
-/go.mod
 
 # IDE-specific files
 .idea/

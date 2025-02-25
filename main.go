@@ -7,7 +7,7 @@ import (
 	"github.com/telman03/ufc/models"
 	"github.com/telman03/ufc/scheduler"
 
-	// "github.com/telman03/ufc/scraper"
+	 "github.com/telman03/ufc/scraper"
 
 	// "gorm.io/gorm"
 
@@ -34,7 +34,7 @@ func main() {
 
 	// go scraper.ScrapeAndStoreFighters()
 	// go scraper.ScrapeAndStoreRankings()
-	// go scraper.ScrapeUpcomingEvents()
+	 go scraper.ScrapeUpcomingEvents()
 	// go scraper.ScrapeFightCards()
 	go scheduler.StartScheduler()
 

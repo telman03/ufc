@@ -9,7 +9,6 @@ import (
 	"github.com/telman03/ufc/db"
 	"github.com/telman03/ufc/models"
 )
-
 func ScrapeUpcomingEvents() {
 	baseURL := "http://ufcstats.com/statistics/events/upcoming"
 	c := colly.NewCollector()
@@ -24,13 +23,21 @@ func ScrapeUpcomingEvents() {
 			return
 		}
 
+		// Check if event already exists in the database
+		var existingEvent models.Event
+		if err := db.DB.Where("url = ?", eventURL).First(&existingEvent).Error; err == nil {
+			fmt.Println("Event already exists, skipping:", eventName)
+			return
+		}
+
+		// Save only if it doesn't exist
 		event := models.Event{
 			Name:     eventName,
 			Date:     date,
 			Location: location,
 			URL:      eventURL,
 		}
-		
+
 		if err := db.DB.Create(&event).Error; err != nil {
 			log.Println("Failed to save event:", err)
 		} else {
@@ -41,7 +48,7 @@ func ScrapeUpcomingEvents() {
 	c.Visit(baseURL)
 }
 
-// ScrapeFightCards scrapes fight card data for all saved events
+
 func ScrapeFightCards() {
 	var events []models.Event
 	if err := db.DB.Find(&events).Error; err != nil {
@@ -54,7 +61,6 @@ func ScrapeFightCards() {
 	}
 }
 
-// scrapeEventFights scrapes fight details for a specific event
 func scrapeEventFights(eventURL string, eventID uint) {
 	c := colly.NewCollector()
 

@@ -19,7 +19,7 @@ import (
 // @Router /events/upcoming [get]
 func GetUpcomingEvents(c echo.Context) error {
 	var events []models.Event
-	if err:= db.DB.Order("date ASC").Find(&events).Error; err != nil {
+	if err:= db.DB.Order("id ASC").Find(&events).Error; err != nil {
 		return c.JSON(http.StatusInternalServerError, echo.Map{"error": "Failed to fetch events"})
 	}
 	return c.JSON(http.StatusOK, events)

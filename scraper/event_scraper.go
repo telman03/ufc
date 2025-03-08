@@ -48,7 +48,6 @@ func ScrapeUpcomingEvents() {
 	c.Visit(baseURL)
 }
 
-
 func ScrapeFightCards() {
 	var events []models.Event
 	if err := db.DB.Find(&events).Error; err != nil {
@@ -82,6 +81,14 @@ func scrapeEventFights(eventURL string, eventID uint) {
 			return
 		}
 
+		// Check if fight already exists
+		var existingFight models.Fight
+		if err := db.DB.Where("event_id = ? AND fighter1 = ? AND fighter2 = ?", eventID, fighter1, fighter2).First(&existingFight).Error; err == nil {
+			fmt.Println("Fight already exists, skipping:", fighter1, "vs", fighter2)
+			return
+		}
+
+		// Save only if fight doesn't exist
 		fight := models.Fight{
 			EventID:    eventID,
 			Fighter1:   fighter1,

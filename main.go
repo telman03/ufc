@@ -35,7 +35,7 @@ func main() {
 	// go scraper.ScrapeAndStoreFighters()
 	// go scraper.ScrapeAndStoreRankings()
 	 go scraper.ScrapeUpcomingEvents()
-	// go scraper.ScrapeFightCards()
+	 go scraper.ScrapeFightCards()
 	go scheduler.StartScheduler()
 
 	e.POST("/register", handlers.Register)

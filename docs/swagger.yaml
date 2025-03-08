@@ -100,6 +100,95 @@ info:
   title: UFC API
   version: "1.0"
 paths:
+  /admin/events:
+    post:
+      consumes:
+      - application/json
+      description: Admins can create a new event
+      parameters:
+      - description: Event Details
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.Event'
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - BearerAuth: []
+      summary: Create a new event
+      tags:
+      - admin
+  /admin/events/{id}:
+    delete:
+      description: Admins can delete an event by ID
+      parameters:
+      - description: Event ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - BearerAuth: []
+      summary: Delete an event
+      tags:
+      - admin
+    put:
+      consumes:
+      - application/json
+      description: Admins can update an event by ID
+      parameters:
+      - description: Event ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Updated Event Details
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.Event'
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - BearerAuth: []
+      summary: Update an existing event
+      tags:
+      - admin
+  /admin/users/{id}/role:
+    post:
+      consumes:
+      - application/json
+      description: Admins can change a user's role (e.g., user → admin)
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: New Role (admin/user)
+        in: body
+        name: request
+        required: true
+        schema:
+          properties:
+            role:
+              type: string
+          type: object
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - BearerAuth: []
+      summary: Update user role
+      tags:
+      - admin
   /events/{event_id}/fightcard:
     get:
       description: Fetches all fights scheduled for a specific UFC event

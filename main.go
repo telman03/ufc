@@ -60,6 +60,7 @@ func main() {
 	e.PUT("/admin/events/:id", handlers.UpdateEvent, middleware.AdminMiddleware)
 	e.DELETE("/admin/events/:id", handlers.DeleteEvent, middleware.AdminMiddleware)
 	e.POST("/admin/users/:id/role", handlers.UpdateUserRole, middleware.AdminMiddleware)
-	
+	e.GET("/admin/users", handlers.GetAllUsers, middleware.AdminMiddleware)
+
 	e.Logger.Fatal(e.Start(":8080"))
 }

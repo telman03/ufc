@@ -161,6 +161,17 @@ paths:
       summary: Update an existing event
       tags:
       - admin
+  /admin/users:
+    get:
+      description: Admins can view all registered users
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - BearerAuth: []
+      summary: Get all users
+      tags:
+      - admin
   /admin/users/{id}/role:
     post:
       consumes:

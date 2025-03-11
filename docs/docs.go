@@ -111,6 +111,24 @@ const docTemplate = `{
                 "responses": {}
             }
         },
+        "/admin/users": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Admins can view all registered users",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "admin"
+                ],
+                "summary": "Get all users",
+                "responses": {}
+            }
+        },
         "/admin/users/{id}/role": {
             "post": {
                 "security": [

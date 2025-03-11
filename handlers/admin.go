@@ -111,3 +111,22 @@ func UpdateUserRole(c echo.Context) error {
 
 	return c.JSON(http.StatusOK, echo.Map{"message": "User role updated successfully"})
 }
+
+
+
+// GetAllUsers godoc
+// @Summary Get all users
+// @Description Admins can view all registered users
+// @Tags admin
+// @Produce json
+// @Security BearerAuth
+// @Router /admin/users [get]
+func GetAllUsers(c echo.Context) error {
+	var users []models.User
+
+	if err := db.DB.Find(&users).Error; err != nil {
+		return c.JSON(http.StatusInternalServerError, echo.Map{"error": "Failed to fetch users"})
+	}
+
+	return c.JSON(http.StatusOK, users)
+}
